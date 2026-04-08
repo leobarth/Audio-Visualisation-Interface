@@ -108,3 +108,12 @@ Key constants near the top of `main.py`:
 - `FREQ_MIN = 2000`, `FREQ_MAX = 8000` (displayed range)
 - `OVERLAP_FACTOR = 4` (stream buffer uses `CHUNK / OVERLAP_FACTOR` frames)
 - `DRAW_TIME = 20` ms (UI update interval)
+
+---
+
+## Showcase Screenshots
+
+Mutliple screenshots on my system with different settings:
+<img width="1919" height="971" alt="Image1" src="https://github.com/user-attachments/assets/94cb7597-0c62-4528-b8a0-97916e8a528b" />
+<img width="1919" height="974" alt="Image2" src="https://github.com/user-attachments/assets/906c71e7-1ce8-4118-af90-e8f6fa94135e" />
+<img width="1919" height="973" alt="Image3" src="https://github.com/user-attachments/assets/14d43e0f-de1e-4f00-bfd4-f1cab679559a" />
