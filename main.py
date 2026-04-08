@@ -113,6 +113,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
                   self.slider_peak_hold, self.slider_gain, self.slider_bin, self.slider_low, self.slider_mid, self.slider_high]:
             s.valueChanged.connect(self.updateLabels)
         self.updateLabels()
+        self.syncSlidersToTogglesOnInit()
 
     def createSlider(self, min_v, max_v, start_v):
         s = QtWidgets.QSlider(QtCore.Qt.Horizontal); s.setRange(min_v, max_v); s.setValue(start_v); return s
@@ -129,6 +130,13 @@ class AudioAnalyzer(QtWidgets.QWidget):
             self.peak_bars.setOpts(height=np.zeros(1), y0=np.zeros(1), visible=False) # Reset & Hide
         self.updateLabels()
     def onGainToggled(self, checked): self.slider_gain.setEnabled(checked); self.updateLabels()
+    
+    def syncSlidersToTogglesOnInit(self):
+        self.slider_ref.setEnabled(not self.btn_running_toggle.isChecked())
+        for s in [self.slider_low, self.slider_mid, self.slider_high]: s.setEnabled(self.btn_eq_toggle.isChecked())
+        for s in [self.slider_attack, self.slider_release]: s.setEnabled(self.btn_ballistics_toggle.isChecked())
+        self.slider_peak_hold.setEnabled(self.btn_peak_toggle.isChecked())
+        self.slider_gain.setEnabled(self.btn_gain_toggle.isChecked())
 
     def updateLabels(self):
         self.btn_running_toggle.setText(f"Auto-Calibration: {'ON' if self.btn_running_toggle.isChecked() else 'OFF'}")
@@ -195,9 +203,13 @@ class AudioAnalyzer(QtWidgets.QWidget):
     def closeEvent(self, event): self.stream.stop_stream(); self.stream.close(); self.updateSettings(); self.writeSettingsToFile(); self.p.terminate(); event.accept()
     
     def loadSettingsFromFile(self):
-        with open("settings.json", "r") as f:
-            settings = json.load(f)
-            return settings
+        try:
+            with open("settings.json", "r") as f:
+                settings = json.load(f)
+                return settings
+        except:
+            self.createDefaultSettingsFile()
+            self.loadSettingsFromFile()
     def updateSettings(self):
         self.SETTINGS["AUTO_CALIBRATION_ON"] = self.btn_running_toggle.isChecked()
         self.SETTINGS["FULL_SCALE_VALUE"] = self.slider_ref.value()
@@ -217,6 +229,26 @@ class AudioAnalyzer(QtWidgets.QWidget):
     def writeSettingsToFile(self):
         with open("settings.json", "w") as f:
             f.write(json.dumps(self.SETTINGS, indent=4))
+    def createDefaultSettingsFile(self):
+        with open("settings.json", "x") as f:
+            default_settings = {
+                "AUTO_CALIBRATION_ON": True,
+                "FULL_SCALE_VALUE": 2000,
+                "NOISE_GATE_VALUE": 2,
+                "EQUALIZER_ON": True,
+                "LOWS_VALUE": 10,
+                "MIDS_VALUE": 10,
+                "HIGHS_VALUE": 10,
+                "BALLISTICS_ON": True,
+                "ATTACK_VALUE": 70,
+                "RELEASE_VALUE": 95,
+                "PEAK_HOLD_ON": True,
+                "PEAK_HOLD_DURATION_VALUE": 5,
+                "MASTER_GAIN_ON": False,
+                "MASTER_GAIN_VALUE": 10,
+                "BINNING_VALUE": 8
+            }
+            f.write(json.dumps(default_settings, indent=4))
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication([]); analyzer = AudioAnalyzer(); analyzer.show(); app.exec()
