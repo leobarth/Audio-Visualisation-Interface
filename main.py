@@ -41,11 +41,11 @@ class AudioAnalyzer(QtWidgets.QWidget):
         controls_group.setFixedWidth(300)
         v_layout = QtWidgets.QVBoxLayout()
 
-        # GROUP 1: CALIBRATION
-        v_layout.addWidget(QtWidgets.QLabel("<b>CALIBRATION</b>"))
-        self.btn_running_toggle = QtWidgets.QPushButton("Auto-Calibration: ON")
-        self.btn_running_toggle.setCheckable(True); self.btn_running_toggle.setChecked(self.SETTINGS["AUTO_CALIBRATION_ON"])
-        v_layout.addWidget(self.btn_running_toggle)
+        # GROUP 1: NORMALISATION (Calibration)
+        v_layout.addWidget(QtWidgets.QLabel("<b>NORMALISATION</b>"))
+        self.btn_calibration_toggle = QtWidgets.QPushButton("Manual Calibration: ON")
+        self.btn_calibration_toggle.setCheckable(True); self.btn_calibration_toggle.setChecked(self.SETTINGS["MANUAL_CALIBRATION_ON"])
+        v_layout.addWidget(self.btn_calibration_toggle)
         self.label_ref = QtWidgets.QLabel("Full Scale")
         v_layout.addWidget(self.label_ref)
         self.slider_ref = self.createSlider(100, 5000, self.SETTINGS["FULL_SCALE_VALUE"])
@@ -104,7 +104,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
         main_layout.addWidget(self.win)
         
         # Connections
-        self.btn_running_toggle.toggled.connect(self.onCalibrationToggled)
+        self.btn_calibration_toggle.toggled.connect(self.onCalibrationToggled)
         self.btn_eq_toggle.toggled.connect(self.onEqToggled)
         self.btn_ballistics_toggle.toggled.connect(self.onBallisticsToggled)
         self.btn_peak_toggle.toggled.connect(self.onPeakToggled)
@@ -118,7 +118,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
     def createSlider(self, min_v, max_v, start_v):
         s = QtWidgets.QSlider(QtCore.Qt.Horizontal); s.setRange(min_v, max_v); s.setValue(start_v); return s
 
-    def onCalibrationToggled(self, checked): self.slider_ref.setEnabled(not checked); self.updateLabels()
+    def onCalibrationToggled(self, checked): self.slider_ref.setEnabled(checked); self.updateLabels()
     def onEqToggled(self, checked):
         for s in [self.slider_low, self.slider_mid, self.slider_high]: s.setEnabled(checked)
         self.updateLabels()
@@ -132,19 +132,19 @@ class AudioAnalyzer(QtWidgets.QWidget):
     def onGainToggled(self, checked): self.slider_gain.setEnabled(checked); self.updateLabels()
     
     def syncSlidersToTogglesOnInit(self):
-        self.slider_ref.setEnabled(not self.btn_running_toggle.isChecked())
+        self.slider_ref.setEnabled(self.btn_calibration_toggle.isChecked())
         for s in [self.slider_low, self.slider_mid, self.slider_high]: s.setEnabled(self.btn_eq_toggle.isChecked())
         for s in [self.slider_attack, self.slider_release]: s.setEnabled(self.btn_ballistics_toggle.isChecked())
         self.slider_peak_hold.setEnabled(self.btn_peak_toggle.isChecked())
         self.slider_gain.setEnabled(self.btn_gain_toggle.isChecked())
 
     def updateLabels(self):
-        self.btn_running_toggle.setText(f"Auto-Calibration: {'ON' if self.btn_running_toggle.isChecked() else 'OFF'}")
+        self.btn_calibration_toggle.setText(f"Manual Calibration: {'ON' if self.btn_calibration_toggle.isChecked() else 'OFF'}")
         self.btn_eq_toggle.setText(f"EQ: {'ON' if self.btn_eq_toggle.isChecked() else 'OFF'}")
         self.btn_ballistics_toggle.setText(f"Ballistics: {'ON' if self.btn_ballistics_toggle.isChecked() else 'OFF'}")
         self.btn_peak_toggle.setText(f"Peak-Hold: {'ON' if self.btn_peak_toggle.isChecked() else 'OFF'}")
         self.btn_gain_toggle.setText(f"Master Gain: {'ON' if self.btn_gain_toggle.isChecked() else 'OFF'}")
-        is_a = self.btn_running_toggle.isChecked()
+        is_a = not self.btn_calibration_toggle.isChecked()
         self.label_ref.setText(f"Full Scale ({self.slider_ref.value()})")
         self.label_gate.setText(f"Noise Gate ({'Relative' if is_a else 'Absolute'}: {self.slider_gate.value() if is_a else int(self.slider_ref.value()*self.slider_gate.value()/100.0)}{'%' if is_a else ''})")
         self.label_low.setText(f"Lows: {self.slider_low.value()/10.0:.1f}x"); self.label_mid.setText(f"Mids: {self.slider_mid.value()/10.0:.1f}x"); self.label_high.setText(f"Highs: {self.slider_high.value()/10.0:.1f}x")
@@ -177,7 +177,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
         if n_bins <= 0: return
         b_fft = rel_fft[:n_bins*c_bin].reshape(n_bins, c_bin).mean(axis=1)
 
-        if self.btn_running_toggle.isChecked(): self.running_max = max(self.running_max*0.98 + np.max(b_fft)*0.02, 500); ref = self.running_max
+        if self.btn_calibration_toggle.isChecked(): self.running_max = max(self.running_max*0.98 + np.max(b_fft)*0.02, 500); ref = self.running_max
         else: ref = self.slider_ref.value()
         b_fft[b_fft < (ref * self.slider_gate.value()/100.0)] = 0
         cur_norm = np.clip((b_fft * gain) / (ref + 1e-6), 0, 1)
@@ -211,7 +211,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
             self.createDefaultSettingsFile()
             self.loadSettingsFromFile()
     def updateSettings(self):
-        self.SETTINGS["AUTO_CALIBRATION_ON"] = self.btn_running_toggle.isChecked()
+        self.SETTINGS["MANUAL_CALIBRATION_ON"] = self.btn_calibration_toggle.isChecked()
         self.SETTINGS["FULL_SCALE_VALUE"] = self.slider_ref.value()
         self.SETTINGS["NOISE_GATE_VALUE"] = self.slider_gate.value()
         self.SETTINGS["EQUALIZER_ON"] = self.btn_eq_toggle.isChecked()
@@ -232,7 +232,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
     def createDefaultSettingsFile(self):
         with open("settings.json", "x") as f:
             default_settings = {
-                "AUTO_CALIBRATION_ON": True,
+                "MANUAL_CALIBRATION_ON": True,
                 "FULL_SCALE_VALUE": 2000,
                 "NOISE_GATE_VALUE": 2,
                 "EQUALIZER_ON": True,
