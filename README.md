@@ -77,8 +77,7 @@ pip install numpy pyaudio pyqtgraph PyQt5
 
 ## Usage
 
-1. Ensure `settings.json` is present in the project root (the app reads/writes its UI state there).
-2. Run:
+Run:
 
 ```bash
 python main.py
