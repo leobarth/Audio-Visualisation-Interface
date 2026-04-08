@@ -10,7 +10,7 @@ A real-time **spectrum analyzer / audio visualiser** written in Python.
 
 - A **bar-graph spectrum** for frequencies between **2 kHz and 8 kHz**.
 - Bars are **normalized** against either:
-  - an **auto-calibrated running max** (recommended), or
+  - an **auto-calibrated running max**, or
   - a **manual full-scale reference**.
 - Optional **peak-hold markers** are drawn above the bars and fall to current amplitude level after a configurable hold time.
 
@@ -87,7 +87,7 @@ Close the window to save the current control values back to `settings.json`.
 
 ---
 
-## How it works (high level)
+## How it works
 
 - **Audio capture**: a PyAudio input stream pushes PCM frames into a queue via a callback.
 - **Rolling buffer**: incoming chunks are appended into a fixed-size buffer (`CHUNK=2048`).
