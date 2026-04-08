@@ -16,7 +16,7 @@ A real-time **spectrum analyzer / audio visualiser** written in Python.
 
 ---
 
-## Controls (as implemented in `main.py`)
+## Controls
 
 ### Calibration
 - **Auto-Calibration**: tracks a running maximum and uses it as the reference level.
