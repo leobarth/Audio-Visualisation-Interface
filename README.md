@@ -8,20 +8,20 @@ A real-time **spectrum analyzer / audio visualiser** written in Python.
 
 ## What the app shows
 
-- A **bar-graph spectrum** for frequencies between **2 kHz and 8 kHz**.
+- A **bar-graph spectrum** for frequencies between **2 kHz and 8 kHz**
 - Bars are **normalized** against either:
   - an **auto-calibrated running max**, or
-  - a **manual full-scale reference**.
-- Optional **peak-hold markers** are drawn above the bars and fall to current amplitude level after a configurable hold time.
+  - a **manual full-scale reference**
+- Optional **peak-hold markers** are drawn above the bars and fall to current amplitude level after a configurable hold time
 
 ---
 
 ## Controls
 
 ### Calibration
-- **Auto-Calibration**: tracks a running maximum and uses it as the reference level.
-- **Full Scale**: manual reference value (enabled when auto-calibration is OFF).
-- **Noise Gate**: suppresses quiet bins (relative to the current reference).
+- **Auto-Calibration**: tracks a running maximum and uses it as the reference level
+- **Full Scale**: manual reference value (enabled when auto-calibration is OFF)
+- **Noise Gate**: suppresses quiet bins (relative to the current reference)
 
 ### Equalizer (simple band gains)
 When **EQ** is ON, the spectrum bins are multiplied by:
@@ -36,10 +36,10 @@ When **Ballistics** is ON, the display is smoothed with:
 This makes the graph look more aesthetically appealing.
 
 ### Peaks & Gain
-- **Peak-Hold**: shows recent peaks per bin for a configurable duration (then decays).
-- **Peak Hold Duration**: hold time in seconds.
-- **Master Gain**: post-processing multiplier applied before normalization.
-- **Binning**: groups FFT bins together (averaging) to control bar count / visual density.
+- **Peak-Hold**: shows recent peaks per bin for a configurable duration (then decays)
+- **Peak Hold Duration**: hold time in seconds
+- **Master Gain**: post-processing multiplier applied before normalization
+- **Binning**: groups FFT bins together (averaging) to control bar count / visual density
 
 ---
 
@@ -68,7 +68,7 @@ source venv/bin/activate
 pip install numpy pyaudio pyqtgraph PyQt5
 ```
 
-> **Note (macOS / Linux):** PyAudio requires PortAudio.
+> **Note (macOS / Linux):** PyAudio requires PortAudio
 > - macOS: `brew install portaudio`
 > - Ubuntu/Debian: `sudo apt-get install portaudio19-dev`
 
@@ -89,13 +89,13 @@ Close the window to save the current control values back to `settings.json`.
 
 ## How it works
 
-- **Audio capture**: a PyAudio input stream pushes PCM frames into a queue via a callback.
-- **Rolling buffer**: incoming chunks are appended into a fixed-size buffer (`CHUNK=2048`).
-- **FFT + windowing**: a Hann window is applied, then an `rfft` produces the magnitude spectrum.
-- **Frequency range**: only **2–8 kHz** is visualized.
-- **Binning**: adjacent FFT bins are averaged into fewer bars.
-- **Normalization + gating**: bars are normalized to a reference level and gated.
-- **Rendering**: PyQtGraph `BarGraphItem` draws the bars; optional peak markers are overlaid.
+- **Audio capture**: a PyAudio input stream pushes PCM frames into a queue via a callback
+- **Rolling buffer**: incoming chunks are appended into a fixed-size buffer (`CHUNK=2048`)
+- **FFT + windowing**: a Hann window is applied, then an `rfft` produces the magnitude spectrum
+- **Frequency range**: only **2–8 kHz** is visualized
+- **Binning**: adjacent FFT bins are averaged into fewer bars
+- **Normalization + gating**: bars are normalized to a reference level and gated
+- **Rendering**: PyQtGraph `BarGraphItem` draws the bars; optional peak markers are overlaid
 
 ---
 
