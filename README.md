@@ -33,6 +33,7 @@ When **EQ** is ON, the spectrum bins are multiplied by:
 When **Ballistics** is ON, the display is smoothed with:
 - **Attack**: how quickly bars rise
 - **Release**: how quickly bars fall
+
 This makes the graph look more aesthetically appealing.
 
 ### Peaks & Gain
