@@ -1,46 +1,110 @@
+# Audio Analyzer (PyAudio + PyQtGraph)
+
+A real-time **spectrum analyzer / audio visualiser** written in Python.
+
+`main.py` captures audio from your system’s **default input device** using **PyAudio**, performs an FFT on a rolling buffer, and renders a **color-coded bar spectrum** in a **PyQtGraph** window. A control panel lets you tune calibration, gating, EQ, smoothing (“ballistics”), peak-hold, and gain in real time.
+
+---
+
+## What the app shows
+
+- A **bar-graph spectrum** for frequencies between **2 kHz and 8 kHz**.
+- Bars are **normalized** against either:
+  - an **auto-calibrated running max** (recommended), or
+  - a **manual full-scale reference**.
+- Optional **peak-hold markers** are drawn above the bars and fall to current amplitude level after a configurable hold time.
+
+---
+
+## Controls (as implemented in `main.py`)
+
+### Calibration
+- **Auto-Calibration**: tracks a running maximum and uses it as the reference level.
+- **Full Scale**: manual reference value (enabled when auto-calibration is OFF).
+- **Noise Gate**: suppresses quiet bins (relative to the current reference).
+
+### Equalizer (simple band gains)
+When **EQ** is ON, the spectrum bins are multiplied by:
+- **Lows**: below ~3 kHz
+- **Mids**: ~3–5 kHz
+- **Highs**: above ~5 kHz
+
+### Ballistics (smoothing)
+When **Ballistics** is ON, the display is smoothed with:
+- **Attack**: how quickly bars rise
+- **Release**: how quickly bars fall
+This makes the graph look more aesthetically appealing.
+
+### Peaks & Gain
+- **Peak-Hold**: shows recent peaks per bin for a configurable duration (then decays).
+- **Peak Hold Duration**: hold time in seconds.
+- **Master Gain**: post-processing multiplier applied before normalization.
+- **Binning**: groups FFT bins together (averaging) to control bar count / visual density.
+
+---
+
+## Requirements
+
+- Python 3
+- PyAudio (PortAudio)
+- NumPy
+- PyQtGraph
+- Qt bindings (PyQt5 recommended)
+
+---
+
 ## Installation
 
-1. **Create a virtual environment**
+```bash
+git clone https://github.com/leobarth/Audio-Visualisation-Interface.git
+cd Audio-Visualisation-Interface
 
-   ```bash
-   # macOS / Linux
-   python3 -m venv venv
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# macOS / Linux
+source venv/bin/activate
 
-   # Windows (PowerShell)
-   .\venv\Scripts\Activate.ps1
-   
-   # Windows (Standard Command Prompt)
-   venv\Scripts\activate
-   ```
+pip install numpy pyaudio pyqtgraph PyQt5
+```
 
-2. **Install system-level audio dependency (PortAudio)** *(required for PyAudio)*
+> **Note (macOS / Linux):** PyAudio requires PortAudio.
+> - macOS: `brew install portaudio`
+> - Ubuntu/Debian: `sudo apt-get install portaudio19-dev`
 
-   - **macOS (Homebrew)**:
-   ```bash
-   brew install portaudio
-   ```
-   - **Ubuntu / Debian**:
-   ```bash
-   sudo apt-get update
-   sudo apt-get install -y portaudio19-dev
-   ```
-   - **Windows**:
-   Usually no extra system dependency is required (PyAudio is typically installed from a wheel). If `pip install -r requirements.txt` fails, upgrade packaging tools first:
-   ```bash
-   python -m pip install --upgrade pip setuptools wheel
-   ```
+---
 
-3. **Install Python dependencies**
+## Usage
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+1. Ensure `settings.json` is present in the project root (the app reads/writes its UI state there).
+2. Run:
 
-4. *(Optional)* **Use a different Qt binding**
+```bash
+python main.py
+```
 
-   This project uses **PyQt5** by default (as listed in `requirements.txt`). If you prefer **PySide2**, install it instead:
+Close the window to save the current control values back to `settings.json`.
 
-   ```bash
-   pip uninstall -y PyQt5 PyQt5-Qt5 PyQt5_sip
-   pip install PySide2
-   ```
+---
+
+## How it works (high level)
+
+- **Audio capture**: a PyAudio input stream pushes PCM frames into a queue via a callback.
+- **Rolling buffer**: incoming chunks are appended into a fixed-size buffer (`CHUNK=2048`).
+- **FFT + windowing**: a Hann window is applied, then an `rfft` produces the magnitude spectrum.
+- **Frequency range**: only **2–8 kHz** is visualized.
+- **Binning**: adjacent FFT bins are averaged into fewer bars.
+- **Normalization + gating**: bars are normalized to a reference level and gated.
+- **Rendering**: PyQtGraph `BarGraphItem` draws the bars; optional peak markers are overlaid.
+
+---
+
+## Configuration notes
+
+Key constants near the top of `main.py`:
+
+- `CHUNK = 2048` (FFT/buffer size)
+- `RATE = 44100` (sample rate)
+- `FREQ_MIN = 2000`, `FREQ_MAX = 8000` (displayed range)
+- `OVERLAP_FACTOR = 4` (stream buffer uses `CHUNK / OVERLAP_FACTOR` frames)
+- `DRAW_TIME = 20` ms (UI update interval)
