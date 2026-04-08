@@ -7,7 +7,7 @@ import time
 import json
 
 # --- CONFIG ---
-CHUNK = 2048
+CHUNK = 1024
 RATE = 44100
 FREQ_MIN = 2000
 FREQ_MAX = 8000
