@@ -66,7 +66,7 @@ venv\Scripts\activate
 # macOS / Linux
 source venv/bin/activate
 
-pip install numpy pyaudio pyqtgraph PyQt5
+pip install -r requirements.txt
 ```
 
 > **Note (macOS / Linux):** PyAudio requires PortAudio
