@@ -209,7 +209,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
                 return settings
         except:
             self.createDefaultSettingsFile()
-            self.loadSettingsFromFile()
+            return self.loadSettingsFromFile()
     def updateSettings(self):
         self.SETTINGS["MANUAL_CALIBRATION_ON"] = self.btn_calibration_toggle.isChecked()
         self.SETTINGS["FULL_SCALE_VALUE"] = self.slider_ref.value()
