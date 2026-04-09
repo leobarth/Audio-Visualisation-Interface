@@ -252,5 +252,3 @@ class AudioAnalyzer(QtWidgets.QWidget):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication([]); analyzer = AudioAnalyzer(); analyzer.show(); app.exec()
-    
-# testing
