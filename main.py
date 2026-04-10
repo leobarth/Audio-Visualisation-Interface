@@ -272,4 +272,4 @@ class AudioAnalyzer(QtWidgets.QWidget):
             f.write(json.dumps(default_settings, indent=4))
 
 if __name__ == '__main__':
-    app = QtWidgets.QApplication([]); analyzer = AudioAnalyzer(); analyzer.show(); app.exec(); QtWidgets.QApplication.processEvents(); analyzer.centerOnPrimaryScreen()
+    app = QtWidgets.QApplication([]); analyzer = AudioAnalyzer(); analyzer.show(); QtWidgets.QApplication.processEvents(); analyzer.centerOnPrimaryScreen(); app.exec()
