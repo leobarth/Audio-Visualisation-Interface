@@ -7,7 +7,6 @@ import numpy as np
 import queue
 import time
 import json
-import keyboard
 
 # --- CONFIG ---
 CHUNK = 2048
