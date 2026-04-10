@@ -1,10 +1,13 @@
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtCore, QtWidgets
+from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtGui import QKeySequence
 import pyaudio
 import numpy as np
 import queue
 import time
 import json
+import keyboard
 
 # --- CONFIG ---
 CHUNK = 2048
@@ -34,11 +37,15 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.processAudio)
         self.timer.start(DRAW_TIME)
+        
+        self.shortcut_hide = QShortcut(QKeySequence("H"), self)
+        self.shortcut_hide.activated.connect(self.toggleHiddenUI)
 
     def initUI(self):
-        main_layout = QtWidgets.QHBoxLayout(self)
-        controls_group = QtWidgets.QGroupBox("Controls")
-        controls_group.setFixedWidth(300)
+        self.sidebar_width = 300
+        self.main_layout = QtWidgets.QHBoxLayout(self)
+        self.controls_group = QtWidgets.QGroupBox("Controls")
+        self.controls_group.setFixedWidth(self.sidebar_width)
         v_layout = QtWidgets.QVBoxLayout()
 
         # GROUP 1: NORMALISATION (Calibration)
@@ -93,7 +100,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.label_bin = QtWidgets.QLabel("Binning"); self.slider_bin = self.createSlider(1, 32, self.SETTINGS["BINNING_VALUE"])
         v_layout.addWidget(self.label_bin); v_layout.addWidget(self.slider_bin)
 
-        v_layout.addStretch(); controls_group.setLayout(v_layout); main_layout.addWidget(controls_group)
+        v_layout.addStretch(); self.controls_group.setLayout(v_layout); self.main_layout.addWidget(self.controls_group, 0)
         self.win = pg.GraphicsLayoutWidget()
         self.plot = self.win.addPlot(title="Spectral Analyzer"); self.plot.setYRange(0, 1.1)
         self.plot.showGrid(x=False, y=True, alpha=0.3)
@@ -101,7 +108,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.bars = pg.BarGraphItem(x=[], height=[], width=1)
         self.peak_bars = pg.BarGraphItem(x=[], height=[], width=1, brush='w')
         self.plot.addItem(self.bars); self.plot.addItem(self.peak_bars)
-        main_layout.addWidget(self.win)
+        self.main_layout.addWidget(self.win, 1)
         
         # Connections
         self.btn_calibration_toggle.toggled.connect(self.onCalibrationToggled)
@@ -137,6 +144,13 @@ class AudioAnalyzer(QtWidgets.QWidget):
         for s in [self.slider_attack, self.slider_release]: s.setEnabled(self.btn_ballistics_toggle.isChecked())
         self.slider_peak_hold.setEnabled(self.btn_peak_toggle.isChecked())
         self.slider_gain.setEnabled(self.btn_gain_toggle.isChecked())
+        
+    def toggleHiddenUI(self):
+        if self.controls_group.isVisible():
+            self.controls_group.hide()
+        else:
+            self.controls_group.show()
+        self.main_layout.activate()
 
     def updateLabels(self):
         self.btn_calibration_toggle.setText(f"Manual Calibration: {'ON' if self.btn_calibration_toggle.isChecked() else 'OFF'}")
