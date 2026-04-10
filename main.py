@@ -20,7 +20,6 @@ class AudioAnalyzer(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Audio Analyzer")
-        self.resize(1300, 900)
 
         self.data_queue = queue.Queue()
         self.audio_buffer = np.zeros(CHUNK)
@@ -31,6 +30,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.SETTINGS = self.loadSettingsFromFile()
         
         self.initUI()
+        self.resize(1500, 300)
         self.initAudio()
 
         self.timer = QtCore.QTimer()
@@ -39,6 +39,14 @@ class AudioAnalyzer(QtWidgets.QWidget):
         
         self.shortcut_hide = QShortcut(QKeySequence("H"), self)
         self.shortcut_hide.activated.connect(self.toggleHiddenUI)
+        
+    def centerOnPrimaryScreen(self):
+        desktop = QtWidgets.QApplication.desktop()
+        screen_rect = desktop.availableGeometry(0)
+        screen_center = screen_rect.center()
+        window_rect = self.frameGeometry()
+        window_rect.moveCenter(screen_center)
+        self.move(window_rect.topLeft())
 
     def initUI(self):
         self.sidebar_width = 300
@@ -101,7 +109,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
 
         v_layout.addStretch(); self.controls_group.setLayout(v_layout); self.main_layout.addWidget(self.controls_group, 0)
         self.win = pg.GraphicsLayoutWidget()
-        self.plot = self.win.addPlot(title="Spectral Analyzer"); self.plot.setYRange(0, 1.1)
+        self.plot = self.win.addPlot(); self.plot.setYRange(0, 1.1)
         self.plot.showGrid(x=False, y=True, alpha=0.3)
         self.plot.setXRange(FREQ_MIN, FREQ_MAX, padding=0)
         self.bars = pg.BarGraphItem(x=[], height=[], width=1)
@@ -264,4 +272,4 @@ class AudioAnalyzer(QtWidgets.QWidget):
             f.write(json.dumps(default_settings, indent=4))
 
 if __name__ == '__main__':
-    app = QtWidgets.QApplication([]); analyzer = AudioAnalyzer(); analyzer.show(); app.exec()
+    app = QtWidgets.QApplication([]); analyzer = AudioAnalyzer(); analyzer.show(); app.exec(); QtWidgets.QApplication.processEvents(); analyzer.centerOnPrimaryScreen()
