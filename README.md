@@ -84,6 +84,7 @@ python main.py
 ```
 
 Close the window to save the current control values back to `settings.json`.
+On the first run, default settings will be implemented.
 
 ---
 
