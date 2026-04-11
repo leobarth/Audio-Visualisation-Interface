@@ -54,6 +54,14 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.controls_group = QtWidgets.QGroupBox("Controls")
         self.controls_group.setFixedWidth(self.sidebar_width)
         v_layout = QtWidgets.QVBoxLayout()
+        
+        # scroll = QtWidgets.QScrollArea()
+        # scroll.setWidgetResizable(True)
+        # scroll.setFixedWidth(320)
+        # scroll.setWidget(self.controls_group)
+        # scroll.setFrameShape(QtWidgets.QFrame.NoFrame)
+        # self.sidebar_container = self.scroll
+        # self.main_layout.addWidget(self.sidebar_container, 0)
 
         # GROUP 1: NORMALISATION (Calibration)
         v_layout.addWidget(QtWidgets.QLabel("<b>NORMALISATION</b>"))
