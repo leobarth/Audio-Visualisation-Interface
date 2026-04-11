@@ -7,6 +7,8 @@ import numpy as np
 import queue
 import time
 import json
+import ctypes
+import platform
 
 # --- CONFIG ---
 CHUNK = 2048
@@ -15,6 +17,10 @@ FREQ_MIN = 2000
 FREQ_MAX = 8000
 OVERLAP_FACTOR = 4
 DRAW_TIME = 20
+
+def makeDpiAware():
+    if int(platform.release()) >= 8:
+        ctypes.windll.shcore.SetProcessDpiAwareness(True)
 
 class AudioAnalyzer(QtWidgets.QWidget):
     def __init__(self):
@@ -280,4 +286,5 @@ class AudioAnalyzer(QtWidgets.QWidget):
             f.write(json.dumps(default_settings, indent=4))
 
 if __name__ == '__main__':
+    makeDpiAware()
     app = QtWidgets.QApplication([]); analyzer = AudioAnalyzer(); analyzer.show(); QtWidgets.QApplication.processEvents(); analyzer.centerOnPrimaryScreen(); app.exec()
