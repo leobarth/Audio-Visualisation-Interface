@@ -70,7 +70,8 @@ class AudioAnalyzer(QtWidgets.QWidget):
         # GROUP 1: NORMALISATION (Calibration)
         v_layout.addWidget(QtWidgets.QLabel("<b>NORMALISATION</b>"))
         self.btn_calibration_toggle = QtWidgets.QPushButton("Manual Calibration: ON")
-        self.btn_calibration_toggle.setCheckable(True); self.btn_calibration_toggle.setChecked(self.SETTINGS["MANUAL_CALIBRATION_ON"])
+        self.btn_calibration_toggle.setCheckable(True)
+        self.btn_calibration_toggle.setChecked(self.SETTINGS["MANUAL_CALIBRATION_ON"])
         v_layout.addWidget(self.btn_calibration_toggle)
         self.label_ref = QtWidgets.QLabel("Full Scale")
         v_layout.addWidget(self.label_ref)
@@ -82,42 +83,64 @@ class AudioAnalyzer(QtWidgets.QWidget):
         v_layout.addWidget(self.slider_gate)
 
         # GROUP 2: EQUALIZER
-        v_layout.addSpacing(10); v_layout.addWidget(QtWidgets.QLabel("<b>EQUALIZER</b>"))
+        v_layout.addSpacing(10)
+        v_layout.addWidget(QtWidgets.QLabel("<b>EQUALIZER</b>"))
         self.btn_eq_toggle = QtWidgets.QPushButton("EQ: ON")
-        self.btn_eq_toggle.setCheckable(True); self.btn_eq_toggle.setChecked(self.SETTINGS["EQUALIZER_ON"])
+        self.btn_eq_toggle.setCheckable(True)
+        self.btn_eq_toggle.setChecked(self.SETTINGS["EQUALIZER_ON"])
         v_layout.addWidget(self.btn_eq_toggle)
-        self.label_low = QtWidgets.QLabel("Lows"); self.slider_low = self.createSlider(0, 40, self.SETTINGS["LOWS_VALUE"])
-        v_layout.addWidget(self.label_low); v_layout.addWidget(self.slider_low)
-        self.label_mid = QtWidgets.QLabel("Mids"); self.slider_mid = self.createSlider(0, 40, self.SETTINGS["MIDS_VALUE"])
-        v_layout.addWidget(self.label_mid); v_layout.addWidget(self.slider_mid)
-        self.label_high = QtWidgets.QLabel("Highs"); self.slider_high = self.createSlider(0, 40, self.SETTINGS["HIGHS_VALUE"])
-        v_layout.addWidget(self.label_high); v_layout.addWidget(self.slider_high)
+        self.label_low = QtWidgets.QLabel("Lows")
+        self.slider_low = self.createSlider(0, 40, self.SETTINGS["LOWS_VALUE"])
+        v_layout.addWidget(self.label_low)
+        v_layout.addWidget(self.slider_low)
+        self.label_mid = QtWidgets.QLabel("Mids")
+        self.slider_mid = self.createSlider(0, 40, self.SETTINGS["MIDS_VALUE"])
+        v_layout.addWidget(self.label_mid)
+        v_layout.addWidget(self.slider_mid)
+        self.label_high = QtWidgets.QLabel("Highs")
+        self.slider_high = self.createSlider(0, 40, self.SETTINGS["HIGHS_VALUE"])
+        v_layout.addWidget(self.label_high)
+        v_layout.addWidget(self.slider_high)
 
         # GROUP 3: BALLISTICS
-        v_layout.addSpacing(10); v_layout.addWidget(QtWidgets.QLabel("<b>BALLISTICS</b>"))
+        v_layout.addSpacing(10)
+        v_layout.addWidget(QtWidgets.QLabel("<b>BALLISTICS</b>"))
         self.btn_ballistics_toggle = QtWidgets.QPushButton("Ballistics: ON")
-        self.btn_ballistics_toggle.setCheckable(True); self.btn_ballistics_toggle.setChecked(self.SETTINGS["BALLISTICS_ON"])
+        self.btn_ballistics_toggle.setCheckable(True)
+        self.btn_ballistics_toggle.setChecked(self.SETTINGS["BALLISTICS_ON"])
         v_layout.addWidget(self.btn_ballistics_toggle)
-        self.label_attack = QtWidgets.QLabel("Attack"); self.slider_attack = self.createSlider(1, 100, self.SETTINGS["ATTACK_VALUE"])
-        v_layout.addWidget(self.label_attack); v_layout.addWidget(self.slider_attack)
-        self.label_release = QtWidgets.QLabel("Release"); self.slider_release = self.createSlider(0, 99, self.SETTINGS["RELEASE_VALUE"])
-        v_layout.addWidget(self.label_release); v_layout.addWidget(self.slider_release)
+        self.label_attack = QtWidgets.QLabel("Attack")
+        self.slider_attack = self.createSlider(1, 100, self.SETTINGS["ATTACK_VALUE"])
+        v_layout.addWidget(self.label_attack)
+        v_layout.addWidget(self.slider_attack)
+        self.label_release = QtWidgets.QLabel("Release")
+        self.slider_release = self.createSlider(0, 99, self.SETTINGS["RELEASE_VALUE"])
+        v_layout.addWidget(self.label_release)
+        v_layout.addWidget(self.slider_release)
 
         # GROUP 4: PEAK HOLD & GAIN
-        v_layout.addSpacing(10); v_layout.addWidget(QtWidgets.QLabel("<b>PEAKS & GAIN</b>"))
+        v_layout.addSpacing(10)
+        v_layout.addWidget(QtWidgets.QLabel("<b>PEAKS & GAIN</b>"))
         self.btn_peak_toggle = QtWidgets.QPushButton("Peak-Hold: ON")
-        self.btn_peak_toggle.setCheckable(True); self.btn_peak_toggle.setChecked(self.SETTINGS["PEAK_HOLD_ON"])
+        self.btn_peak_toggle.setCheckable(True)
+        self.btn_peak_toggle.setChecked(self.SETTINGS["PEAK_HOLD_ON"])
         v_layout.addWidget(self.btn_peak_toggle)
         self.label_peak_hold = QtWidgets.QLabel("Peak Hold Duration")
         self.slider_peak_hold = self.createSlider(0, 30, self.SETTINGS["PEAK_HOLD_DURATION_VALUE"])
-        v_layout.addWidget(self.label_peak_hold); v_layout.addWidget(self.slider_peak_hold)
+        v_layout.addWidget(self.label_peak_hold)
+        v_layout.addWidget(self.slider_peak_hold)
         self.btn_gain_toggle = QtWidgets.QPushButton("Master Gain: ON")
-        self.btn_gain_toggle.setCheckable(True); self.btn_gain_toggle.setChecked(self.SETTINGS["MASTER_GAIN_ON"])
+        self.btn_gain_toggle.setCheckable(True)
+        self.btn_gain_toggle.setChecked(self.SETTINGS["MASTER_GAIN_ON"])
         v_layout.addWidget(self.btn_gain_toggle)
-        self.label_gain = QtWidgets.QLabel("Master Gain"); self.slider_gain = self.createSlider(1, 100, self.SETTINGS["MASTER_GAIN_VALUE"])
-        v_layout.addWidget(self.label_gain); v_layout.addWidget(self.slider_gain)
-        self.label_bin = QtWidgets.QLabel("Binning"); self.slider_bin = self.createSlider(1, 32, self.SETTINGS["BINNING_VALUE"])
-        v_layout.addWidget(self.label_bin); v_layout.addWidget(self.slider_bin)
+        self.label_gain = QtWidgets.QLabel("Master Gain")
+        self.slider_gain = self.createSlider(1, 100, self.SETTINGS["MASTER_GAIN_VALUE"])
+        v_layout.addWidget(self.label_gain)
+        v_layout.addWidget(self.slider_gain)
+        self.label_bin = QtWidgets.QLabel("Binning")
+        self.slider_bin = self.createSlider(1, 32, self.SETTINGS["BINNING_VALUE"])
+        v_layout.addWidget(self.label_bin)
+        v_layout.addWidget(self.slider_bin)
 
         v_layout.addStretch()
         self.controls_group.setLayout(v_layout)
@@ -135,7 +158,8 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.plot.setXRange(FREQ_MIN, FREQ_MAX, padding=0)
         self.bars = pg.BarGraphItem(x=[], height=[], width=1)
         self.peak_bars = pg.BarGraphItem(x=[], height=[], width=1, brush="w")
-        self.plot.addItem(self.bars); self.plot.addItem(self.peak_bars)
+        self.plot.addItem(self.bars)
+        self.plot.addItem(self.peak_bars)
         self.main_layout.addWidget(self.win, 1)
         
         # Connections
@@ -151,20 +175,31 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.syncSlidersToTogglesOnInit()
 
     def createSlider(self, min_v, max_v, start_v):
-        s = QtWidgets.QSlider(QtCore.Qt.Horizontal); s.setRange(min_v, max_v); s.setValue(start_v); return s
+        s = QtWidgets.QSlider(QtCore.Qt.Horizontal)
+        s.setRange(min_v, max_v)
+        s.setValue(start_v)
+        return s
 
-    def onCalibrationToggled(self, checked): self.slider_ref.setEnabled(checked); self.updateLabels()
+    def onCalibrationToggled(self, checked):
+        self.slider_ref.setEnabled(checked)
+        self.updateLabels()
     def onEqToggled(self, checked):
         for s in [self.slider_low, self.slider_mid, self.slider_high]: s.setEnabled(checked)
         self.updateLabels()
-    def onBallisticsToggled(self, checked): self.slider_attack.setEnabled(checked); self.slider_release.setEnabled(checked); self.updateLabels()
+    def onBallisticsToggled(self, checked):
+        self.slider_attack.setEnabled(checked)
+        self.slider_release.setEnabled(checked)
+        self.updateLabels()
     def onPeakToggled(self, checked):
         self.slider_peak_hold.setEnabled(checked)
         if not checked:
-            self.peaks = None; self.peak_times = None
+            self.peaks = None
+            self.peak_times = None
             self.peak_bars.setOpts(height=np.zeros(1), y0=np.zeros(1), visible=False) # Reset & Hide
         self.updateLabels()
-    def onGainToggled(self, checked): self.slider_gain.setEnabled(checked); self.updateLabels()
+    def onGainToggled(self, checked):
+        self.slider_gain.setEnabled(checked)
+        self.updateLabels()
     
     def syncSlidersToTogglesOnInit(self):
         self.slider_ref.setEnabled(self.btn_calibration_toggle.isChecked())
@@ -189,14 +224,21 @@ class AudioAnalyzer(QtWidgets.QWidget):
         is_a = not self.btn_calibration_toggle.isChecked()
         self.label_ref.setText(f"Full Scale ({self.slider_ref.value()})")
         self.label_gate.setText(f"Noise Gate ({'Relative' if is_a else 'Absolute'}: {self.slider_gate.value() if is_a else int(self.slider_ref.value()*self.slider_gate.value()/100.0)}{'%' if is_a else ''})")
-        self.label_low.setText(f"Lows: {self.slider_low.value()/10.0:.1f}x"); self.label_mid.setText(f"Mids: {self.slider_mid.value()/10.0:.1f}x"); self.label_high.setText(f"Highs: {self.slider_high.value()/10.0:.1f}x")
-        self.label_gain.setText(f"Master Gain: {self.slider_gain.value()/10.0:.1f}x"); self.label_peak_hold.setText(f"Hold Duration: {self.slider_peak_hold.value()/10.0:.1f}s")
-        self.label_attack.setText(f"Attack: {self.slider_attack.value()/100.0:.2f}"); self.label_release.setText(f"Release: {self.slider_release.value()/100.0:.2f}"); self.label_bin.setText(f"Binning: {self.slider_bin.value()}")
+        self.label_low.setText(f"Lows: {self.slider_low.value()/10.0:.1f}x")
+        self.label_mid.setText(f"Mids: {self.slider_mid.value()/10.0:.1f}x")
+        self.label_high.setText(f"Highs: {self.slider_high.value()/10.0:.1f}x")
+        self.label_gain.setText(f"Master Gain: {self.slider_gain.value()/10.0:.1f}x")
+        self.label_peak_hold.setText(f"Hold Duration: {self.slider_peak_hold.value()/10.0:.1f}s")
+        self.label_attack.setText(f"Attack: {self.slider_attack.value()/100.0:.2f}")
+        self.label_release.setText(f"Release: {self.slider_release.value()/100.0:.2f}")
+        self.label_bin.setText(f"Binning: {self.slider_bin.value()}")
 
     def initAudio(self):
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=RATE, input=True, frames_per_buffer=CHUNK // OVERLAP_FACTOR, stream_callback=self.audioCallback)
-    def audioCallback(self, in_data, frame_count, time_info, status): self.data_queue.put(in_data); return (None, pyaudio.paContinue)
+    def audioCallback(self, in_data, frame_count, time_info, status):
+        self.data_queue.put(in_data)
+        return (None, pyaudio.paContinue)
     def processAudio(self):
         while not self.data_queue.empty():
             new_data = np.frombuffer(self.data_queue.get_nowait(), dtype=np.int16)
@@ -213,14 +255,21 @@ class AudioAnalyzer(QtWidgets.QWidget):
 
         if self.btn_eq_toggle.isChecked():
             l_m, m_m, h_m = (rel_f < 3000), (rel_f >= 3000) & (rel_f < 5000), (rel_f >= 5000)
-            rel_fft[l_m] *= (self.slider_low.value()/10.0); rel_fft[m_m] *= (self.slider_mid.value()/10.0); rel_fft[h_m] *= (self.slider_high.value()/10.0)
+            rel_fft[l_m] *= (self.slider_low.value()/10.0)
+            rel_fft[m_m] *= (self.slider_mid.value()/10.0)
+            rel_fft[h_m] *= (self.slider_high.value()/10.0)
 
-        c_bin = self.slider_bin.value(); n_bins = len(rel_fft) // c_bin
-        if n_bins <= 0: return
+        c_bin = self.slider_bin.value()
+        n_bins = len(rel_fft) // c_bin
+        if n_bins <= 0:
+            return
         b_fft = rel_fft[:n_bins*c_bin].reshape(n_bins, c_bin).mean(axis=1)
 
-        if self.btn_calibration_toggle.isChecked(): self.running_max = max(self.running_max*0.98 + np.max(b_fft)*0.02, 500); ref = self.running_max
-        else: ref = self.slider_ref.value()
+        if self.btn_calibration_toggle.isChecked():
+            self.running_max = max(self.running_max*0.98 + np.max(b_fft)*0.02, 500)
+            ref = self.running_max
+        else:
+            ref = self.slider_ref.value()
         b_fft[b_fft < (ref * self.slider_gate.value()/100.0)] = 0
         cur_norm = np.clip((b_fft * gain) / (ref + 1e-6), 0, 1)
 
@@ -230,19 +279,31 @@ class AudioAnalyzer(QtWidgets.QWidget):
             else: self.prev_bars = np.where(cur_norm > self.prev_bars, (self.prev_bars*(1-att)) + (cur_norm*att), (self.prev_bars*rle) + (cur_norm*(1-rle)))
         else: self.prev_bars = cur_norm
 
-        bin_w = (FREQ_MAX - FREQ_MIN) / n_bins; b_x = np.linspace(FREQ_MIN+bin_w/2, FREQ_MAX-bin_w/2, n_bins)
+        bin_w = (FREQ_MAX - FREQ_MIN) / n_bins
+        b_x = np.linspace(FREQ_MIN+bin_w/2, FREQ_MAX-bin_w/2, n_bins)
         self.bars.setOpts(x=b_x, height=self.prev_bars, width=bin_w, brushes=[pg.mkBrush(pg.intColor(i, n_bins)) for i in range(n_bins)])
 
         if self.btn_peak_toggle.isChecked():
             now, h_dur = time.time(), self.slider_peak_hold.value()/10.0
-            if self.peaks is None or len(self.peaks) != n_bins: self.peaks = self.prev_bars.copy(); self.peak_times = np.full(n_bins, now)
+            if self.peaks is None or len(self.peaks) != n_bins:
+                self.peaks = self.prev_bars.copy()
+                self.peak_times = np.full(n_bins, now)
             else:
                 for i in range(n_bins):
-                    if self.prev_bars[i] >= self.peaks[i]: self.peaks[i] = self.prev_bars[i]; self.peak_times[i] = now
-                    elif now - self.peak_times[i] > h_dur: self.peaks[i] *= 0.95
+                    if self.prev_bars[i] >= self.peaks[i]:
+                        self.peaks[i] = self.prev_bars[i]
+                        self.peak_times[i] = now
+                    elif now - self.peak_times[i] > h_dur:
+                        self.peaks[i] *= 0.95
             self.peak_bars.setOpts(x=b_x, height=np.full(n_bins, 0.01), y0=self.peaks, width=bin_w*0.8, visible=True)
 
-    def closeEvent(self, event): self.stream.stop_stream(); self.stream.close(); self.updateSettings(); self.writeSettingsToFile(); self.p.terminate(); event.accept()
+    def closeEvent(self, event):
+        self.stream.stop_stream()
+        self.stream.close()
+        self.updateSettings()
+        self.writeSettingsToFile()
+        self.p.terminate()
+        event.accept()
     
     def loadSettingsFromFile(self):
         try:
@@ -294,4 +355,9 @@ class AudioAnalyzer(QtWidgets.QWidget):
 
 if __name__ == "__main__":
     makeDpiAware()
-    app = QtWidgets.QApplication([]); analyzer = AudioAnalyzer(); analyzer.show(); QtWidgets.QApplication.processEvents(); analyzer.centerOnPrimaryScreen(); app.exec()
+    app = QtWidgets.QApplication([])
+    analyzer = AudioAnalyzer()
+    analyzer.show()
+    QtWidgets.QApplication.processEvents()
+    analyzer.centerOnPrimaryScreen()
+    app.exec()
