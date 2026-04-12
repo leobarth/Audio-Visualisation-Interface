@@ -10,7 +10,7 @@ import json
 import ctypes
 import platform
 
-# --- CONFIG ---
+# CONFIG
 CHUNK = 2048
 RATE = 44100
 FREQ_MIN = 2000
@@ -129,7 +129,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.plot.showGrid(x=False, y=True, alpha=0.3)
         self.plot.setXRange(FREQ_MIN, FREQ_MAX, padding=0)
         self.bars = pg.BarGraphItem(x=[], height=[], width=1)
-        self.peak_bars = pg.BarGraphItem(x=[], height=[], width=1, brush='w')
+        self.peak_bars = pg.BarGraphItem(x=[], height=[], width=1, brush="w")
         self.plot.addItem(self.bars); self.plot.addItem(self.peak_bars)
         self.main_layout.addWidget(self.win, 1)
         
@@ -176,14 +176,14 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.main_layout.activate()
 
     def updateLabels(self):
-        self.btn_calibration_toggle.setText(f"Manual Calibration: {'ON' if self.btn_calibration_toggle.isChecked() else 'OFF'}")
-        self.btn_eq_toggle.setText(f"EQ: {'ON' if self.btn_eq_toggle.isChecked() else 'OFF'}")
-        self.btn_ballistics_toggle.setText(f"Ballistics: {'ON' if self.btn_ballistics_toggle.isChecked() else 'OFF'}")
-        self.btn_peak_toggle.setText(f"Peak-Hold: {'ON' if self.btn_peak_toggle.isChecked() else 'OFF'}")
-        self.btn_gain_toggle.setText(f"Master Gain: {'ON' if self.btn_gain_toggle.isChecked() else 'OFF'}")
+        self.btn_calibration_toggle.setText(f"Manual Calibration: {"ON" if self.btn_calibration_toggle.isChecked() else "OFF"}")
+        self.btn_eq_toggle.setText(f"EQ: {"ON" if self.btn_eq_toggle.isChecked() else "OFF"}")
+        self.btn_ballistics_toggle.setText(f"Ballistics: {"ON" if self.btn_ballistics_toggle.isChecked() else "OFF"}")
+        self.btn_peak_toggle.setText(f"Peak-Hold: {"ON" if self.btn_peak_toggle.isChecked() else "OFF"}")
+        self.btn_gain_toggle.setText(f"Master Gain: {"ON" if self.btn_gain_toggle.isChecked() else "OFF"}")
         is_a = not self.btn_calibration_toggle.isChecked()
         self.label_ref.setText(f"Full Scale ({self.slider_ref.value()})")
-        self.label_gate.setText(f"Noise Gate ({'Relative' if is_a else 'Absolute'}: {self.slider_gate.value() if is_a else int(self.slider_ref.value()*self.slider_gate.value()/100.0)}{'%' if is_a else ''})")
+        self.label_gate.setText(f"Noise Gate ({"Relative" if is_a else "Absolute"}: {self.slider_gate.value() if is_a else int(self.slider_ref.value()*self.slider_gate.value()/100.0)}{"%" if is_a else ""})")
         self.label_low.setText(f"Lows: {self.slider_low.value()/10.0:.1f}x"); self.label_mid.setText(f"Mids: {self.slider_mid.value()/10.0:.1f}x"); self.label_high.setText(f"Highs: {self.slider_high.value()/10.0:.1f}x")
         self.label_gain.setText(f"Master Gain: {self.slider_gain.value()/10.0:.1f}x"); self.label_peak_hold.setText(f"Hold Duration: {self.slider_peak_hold.value()/10.0:.1f}s")
         self.label_attack.setText(f"Attack: {self.slider_attack.value()/100.0:.2f}"); self.label_release.setText(f"Release: {self.slider_release.value()/100.0:.2f}"); self.label_bin.setText(f"Binning: {self.slider_bin.value()}")
@@ -287,6 +287,6 @@ class AudioAnalyzer(QtWidgets.QWidget):
             }
             f.write(json.dumps(default_settings, indent=4))
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     makeDpiAware()
     app = QtWidgets.QApplication([]); analyzer = AudioAnalyzer(); analyzer.show(); QtWidgets.QApplication.processEvents(); analyzer.centerOnPrimaryScreen(); app.exec()
