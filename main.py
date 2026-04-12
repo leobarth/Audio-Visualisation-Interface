@@ -56,18 +56,16 @@ class AudioAnalyzer(QtWidgets.QWidget):
 
     def initUI(self):
         self.sidebar_width = 300
+        scroll_padding = 42
         self.main_layout = QtWidgets.QHBoxLayout(self)
         self.controls_group = QtWidgets.QGroupBox("Controls")
         self.controls_group.setFixedWidth(self.sidebar_width)
         v_layout = QtWidgets.QVBoxLayout()
         
-        # scroll = QtWidgets.QScrollArea()
-        # scroll.setWidgetResizable(True)
-        # scroll.setFixedWidth(320)
-        # scroll.setWidget(self.controls_group)
-        # scroll.setFrameShape(QtWidgets.QFrame.NoFrame)
-        # self.sidebar_container = self.scroll
-        # self.main_layout.addWidget(self.sidebar_container, 0)
+        self.scroll = QtWidgets.QScrollArea()
+        self.scroll.setWidgetResizable(True)
+        self.scroll.setFixedWidth(self.sidebar_width + scroll_padding)
+        self.scroll.setFrameShape(QtWidgets.QFrame.NoFrame)
 
         # GROUP 1: NORMALISATION (Calibration)
         v_layout.addWidget(QtWidgets.QLabel("<b>NORMALISATION</b>"))
@@ -121,7 +119,11 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.label_bin = QtWidgets.QLabel("Binning"); self.slider_bin = self.createSlider(1, 32, self.SETTINGS["BINNING_VALUE"])
         v_layout.addWidget(self.label_bin); v_layout.addWidget(self.slider_bin)
 
-        v_layout.addStretch(); self.controls_group.setLayout(v_layout); self.main_layout.addWidget(self.controls_group, 0)
+        v_layout.addStretch()
+        self.controls_group.setLayout(v_layout)
+        self.scroll.setWidget(self.controls_group)
+        self.main_layout.addWidget(self.scroll)
+        
         self.win = pg.GraphicsLayoutWidget()
         self.plot = self.win.addPlot(); self.plot.setYRange(0, 1.1)
         self.plot.showGrid(x=False, y=True, alpha=0.3)
@@ -167,10 +169,10 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.slider_gain.setEnabled(self.btn_gain_toggle.isChecked())
         
     def toggleHiddenUI(self):
-        if self.controls_group.isVisible():
-            self.controls_group.hide()
+        if self.scroll.isVisible():
+            self.scroll.hide()
         else:
-            self.controls_group.show()
+            self.scroll.show()
         self.main_layout.activate()
 
     def updateLabels(self):
