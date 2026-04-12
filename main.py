@@ -36,7 +36,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.SETTINGS = self.loadSettingsFromFile()
         
         self.initUI()
-        self.resize(1500, 300)
+        self.resize(1500, 900)
         self.initAudio()
 
         self.timer = QtCore.QTimer()
@@ -125,7 +125,12 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.main_layout.addWidget(self.scroll)
         
         self.win = pg.GraphicsLayoutWidget()
-        self.plot = self.win.addPlot(); self.plot.setYRange(0, 1.1)
+        self.plot = self.win.addPlot()
+        self.plot.setYRange(0, 1.0)
+        self.plot.hideButtons()
+        self.view_box = self.plot.getViewBox()
+        self.view_box.setMouseEnabled(x=False, y=False)
+        self.view_box.setMenuEnabled(False)
         self.plot.showGrid(x=False, y=True, alpha=0.3)
         self.plot.setXRange(FREQ_MIN, FREQ_MAX, padding=0)
         self.bars = pg.BarGraphItem(x=[], height=[], width=1)
@@ -176,14 +181,14 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.main_layout.activate()
 
     def updateLabels(self):
-        self.btn_calibration_toggle.setText(f"Manual Calibration: {"ON" if self.btn_calibration_toggle.isChecked() else "OFF"}")
-        self.btn_eq_toggle.setText(f"EQ: {"ON" if self.btn_eq_toggle.isChecked() else "OFF"}")
-        self.btn_ballistics_toggle.setText(f"Ballistics: {"ON" if self.btn_ballistics_toggle.isChecked() else "OFF"}")
-        self.btn_peak_toggle.setText(f"Peak-Hold: {"ON" if self.btn_peak_toggle.isChecked() else "OFF"}")
-        self.btn_gain_toggle.setText(f"Master Gain: {"ON" if self.btn_gain_toggle.isChecked() else "OFF"}")
+        self.btn_calibration_toggle.setText(f"Manual Calibration: {'ON' if self.btn_calibration_toggle.isChecked() else 'OFF'}")
+        self.btn_eq_toggle.setText(f"EQ: {'ON' if self.btn_eq_toggle.isChecked() else 'OFF'}")
+        self.btn_ballistics_toggle.setText(f"Ballistics: {'ON' if self.btn_ballistics_toggle.isChecked() else 'OFF'}")
+        self.btn_peak_toggle.setText(f"Peak-Hold: {'ON' if self.btn_peak_toggle.isChecked() else 'OFF'}")
+        self.btn_gain_toggle.setText(f"Master Gain: {'ON' if self.btn_gain_toggle.isChecked() else 'OFF'}")
         is_a = not self.btn_calibration_toggle.isChecked()
         self.label_ref.setText(f"Full Scale ({self.slider_ref.value()})")
-        self.label_gate.setText(f"Noise Gate ({"Relative" if is_a else "Absolute"}: {self.slider_gate.value() if is_a else int(self.slider_ref.value()*self.slider_gate.value()/100.0)}{"%" if is_a else ""})")
+        self.label_gate.setText(f"Noise Gate ({'Relative' if is_a else 'Absolute'}: {self.slider_gate.value() if is_a else int(self.slider_ref.value()*self.slider_gate.value()/100.0)}{'%' if is_a else ''})")
         self.label_low.setText(f"Lows: {self.slider_low.value()/10.0:.1f}x"); self.label_mid.setText(f"Mids: {self.slider_mid.value()/10.0:.1f}x"); self.label_high.setText(f"Highs: {self.slider_high.value()/10.0:.1f}x")
         self.label_gain.setText(f"Master Gain: {self.slider_gain.value()/10.0:.1f}x"); self.label_peak_hold.setText(f"Hold Duration: {self.slider_peak_hold.value()/10.0:.1f}s")
         self.label_attack.setText(f"Attack: {self.slider_attack.value()/100.0:.2f}"); self.label_release.setText(f"Release: {self.slider_release.value()/100.0:.2f}"); self.label_bin.setText(f"Binning: {self.slider_bin.value()}")
