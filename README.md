@@ -121,3 +121,8 @@ Mutliple screenshots on my system with different settings:
 <img width="1919" height="974" alt="Image2" src="https://github.com/user-attachments/assets/906c71e7-1ce8-4118-af90-e8f6fa94135e" />
 
 <img width="1919" height="973" alt="Image3" src="https://github.com/user-attachments/assets/14d43e0f-de1e-4f00-bfd4-f1cab679559a" />
+
+---
+
+## Author
+Leo Barth
