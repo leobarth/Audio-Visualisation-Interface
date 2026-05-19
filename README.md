@@ -4,7 +4,6 @@ A real-time **spectrum analyzer / audio visualiser** written in Python.
 
 `main.py` captures audio from your system’s **default input device** using **PyAudio**, performs an FFT on a rolling buffer, and renders a **color-coded bar spectrum** in a **PyQtGraph** window. A control panel lets you tune calibration, gating, EQ, smoothing (“ballistics”), peak-hold, and gain in real time.
 
----
 
 ## What the app shows
 
@@ -14,7 +13,6 @@ A real-time **spectrum analyzer / audio visualiser** written in Python.
   - a **manual full-scale reference**
 - Optional **peak-hold markers** are drawn above the bars and fall to current amplitude level after a configurable hold time
 
----
 
 ## Controls
 
@@ -42,7 +40,6 @@ This makes the graph look more aesthetically appealing.
 - **Master Gain**: post-processing multiplier applied before normalization
 - **Binning**: groups FFT bins together (averaging) to control bar count / visual density
 
----
 
 ## Requirements
 
@@ -52,7 +49,6 @@ This makes the graph look more aesthetically appealing.
 - PyQtGraph
 - Qt bindings (PyQt5 recommended)
 
----
 
 ## Installation
 
@@ -73,7 +69,6 @@ pip install -r requirements.txt
 > - macOS: `brew install portaudio`
 > - Ubuntu/Debian: `sudo apt-get install portaudio19-dev`
 
----
 
 ## Usage
 
@@ -86,7 +81,6 @@ python main.py
 Close the window to save the current control values back to `settings.json`.
 On the first run, default settings will be implemented.
 
----
 
 ## How it works
 
@@ -98,7 +92,6 @@ On the first run, default settings will be implemented.
 - **Normalization + gating**: bars are normalized to a reference level and gated
 - **Rendering**: PyQtGraph `BarGraphItem` draws the bars; optional peak markers are overlaid
 
----
 
 ## Configuration notes
 
@@ -110,7 +103,6 @@ Key constants near the top of `main.py`:
 - `OVERLAP_FACTOR = 4` (stream buffer uses `CHUNK / OVERLAP_FACTOR` frames)
 - `DRAW_TIME = 20` ms (UI update interval)
 
----
 
 ## Showcase Screenshots
 
@@ -122,7 +114,7 @@ Mutliple screenshots on my system with different settings:
 
 <img width="1919" height="973" alt="Image3" src="https://github.com/user-attachments/assets/14d43e0f-de1e-4f00-bfd4-f1cab679559a" />
 
----
 
 ## Author
+
 Leo Barth
