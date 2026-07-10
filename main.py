@@ -7,7 +7,6 @@ import numpy as np
 import queue
 import time
 import json
-import ctypes
 import platform
 
 # CONFIG
@@ -19,6 +18,9 @@ OVERLAP_FACTOR = 4
 DRAW_TIME = 20
 
 def makeDpiAware():
+    if platform.system() != "Windows":
+        return
+    import ctypes
     if int(platform.release()) >= 8:
         ctypes.windll.shcore.SetProcessDpiAwareness(True)
 
