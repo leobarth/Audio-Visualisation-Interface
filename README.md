@@ -33,7 +33,7 @@ pip install -r requirements.txt
 > **Note (macOS / Linux):** PyAudio requires PortAudio
 > - macOS: `brew install portaudio`
 > - Ubuntu/Debian: `sudo apt install python3-pyaudio`
-
+>
 > Ensure these are installed correctly.
 
 
