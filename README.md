@@ -5,15 +5,6 @@ A real-time **spectrum analyzer / audio visualiser** written in Python.
 `main.py` captures audio from your system’s **default input device** using **PyAudio**, performs an FFT on a rolling buffer, and renders a **color-coded bar spectrum** in a **PyQtGraph** window. A control panel lets you tune calibration, gating, EQ, smoothing (“ballistics”), peak-hold, and gain in real time.
 
 
-## What the app shows
-
-- A **bar-graph spectrum** for frequencies between **2 kHz and 8 kHz**
-- Bars are **normalized** against either:
-  - an **auto-calibrated running max**, or
-  - a **manual full-scale reference**
-- Optional **peak-hold markers** are drawn above the bars and fall to current amplitude level after a configurable hold time
-
-
 ## Requirements
 
 - Python 3
