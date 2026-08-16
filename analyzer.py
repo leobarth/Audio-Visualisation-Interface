@@ -9,6 +9,8 @@ import time
 import json
 
 class AudioAnalyzer(QtWidgets.QWidget):
+    """Main audio analyzer class that handles audio input, processing, and visualization."""
+
     def __init__(self, config: dict):
         super().__init__()
         self.setWindowTitle("Audio Analyzer")
@@ -42,11 +44,13 @@ class AudioAnalyzer(QtWidgets.QWidget):
         window_rect.moveCenter(screen_center)
         self.move(window_rect.topLeft())
 
+    # UI initialization and layout functions
+
     def initUI(self):
         self.sidebar_width = 300
         scroll_padding = 42
         self.main_layout = QtWidgets.QHBoxLayout(self)
-        self.controls_group = QtWidgets.QGroupBox("Controls")
+        self.controls_group = QtWidgets.QGroupBox("Controls (Hide/unhide using 'H' key)")
         self.controls_group.setFixedWidth(self.sidebar_width)
         v_layout = QtWidgets.QVBoxLayout()
         
@@ -225,6 +229,8 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.label_release.setText(f"Release: {self.slider_release.value()/100.0:.2f}")
         self.label_bin.setText(f"Binning: {self.slider_bin.value()}")
 
+    # audio processing functions based on pyaudio and numpy
+
     def initAudio(self):
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, 
@@ -245,6 +251,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
             self.audio_buffer[-len(new_data):] = new_data
             self.updatePlot()
 
+    # main calculation and plotting function
     def updatePlot(self):
         gain = (self.slider_gain.value()/10.0) if self.btn_gain_toggle.isChecked() else 1.0
         fft_d = np.abs(np.fft.rfft(self.audio_buffer * np.hanning(self.config["CHUNK"])))
@@ -297,7 +304,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
                         self.peak_times[i] = now
                     elif now - self.peak_times[i] > h_dur:
                         self.peaks[i] *= 0.95
-            self.peak_bars.setOpts(x=b_x, #
+            self.peak_bars.setOpts(x=b_x,
                                    height=np.full(n_bins, 0.01), 
                                    y0=self.peaks, 
                                    width=bin_w*0.8, 
@@ -310,6 +317,8 @@ class AudioAnalyzer(QtWidgets.QWidget):
         self.writeSettingsToFile()
         self.p.terminate()
         event.accept()
+
+    # settings management
     
     def loadSettingsFromFile(self):
         try:
@@ -341,6 +350,7 @@ class AudioAnalyzer(QtWidgets.QWidget):
         with open("settings.json", "w") as f:
             f.write(json.dumps(self.SETTINGS, indent=4))
 
+    # hardcoded default settings in case the settings.json file is missing or corrupted
     def createDefaultSettingsFile(self):
         with open("settings.json", "x") as f:
             default_settings = {

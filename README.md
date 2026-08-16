@@ -14,33 +14,6 @@ A real-time **spectrum analyzer / audio visualiser** written in Python.
 - Optional **peak-hold markers** are drawn above the bars and fall to current amplitude level after a configurable hold time
 
 
-## Controls
-
-### Calibration
-- **Auto-Calibration**: tracks a running maximum and uses it as the reference level
-- **Full Scale**: manual reference value (enabled when auto-calibration is OFF)
-- **Noise Gate**: suppresses quiet bins (relative to the current reference)
-
-### Equalizer (simple band gains)
-When **EQ** is ON, the spectrum bins are multiplied by:
-- **Lows**: below ~3 kHz
-- **Mids**: ~3–5 kHz
-- **Highs**: above ~5 kHz
-
-### Ballistics (smoothing)
-When **Ballistics** is ON, the display is smoothed with:
-- **Attack**: how quickly bars rise
-- **Release**: how quickly bars fall
-
-This makes the graph look more aesthetically appealing.
-
-### Peaks & Gain
-- **Peak-Hold**: shows recent peaks per bin for a configurable duration (then decays)
-- **Peak Hold Duration**: hold time in seconds
-- **Master Gain**: post-processing multiplier applied before normalization
-- **Binning**: groups FFT bins together (averaging) to control bar count / visual density
-
-
 ## Requirements
 
 - Python 3
@@ -48,6 +21,7 @@ This makes the graph look more aesthetically appealing.
 - NumPy
 - PyQtGraph
 - Qt bindings (PyQt5 recommended)
+- This application is **Windows-optimized**! Please verify PyAudio and PyQt compatibility for other operating systems.
 
 
 ## Installation
@@ -67,7 +41,8 @@ pip install -r requirements.txt
 
 > **Note (macOS / Linux):** PyAudio requires PortAudio
 > - macOS: `brew install portaudio`
-> - Ubuntu/Debian: `sudo apt-get install portaudio19-dev`
+> - Ubuntu/Debian: `sudo apt install python3-pyaudio`
+> Ensure these are installed correctly.
 
 
 ## Usage
@@ -79,10 +54,10 @@ python main.py
 ```
 
 Close the window to save the current control values back to `settings.json`.
-On the first run, default settings will be implemented.
+On the first run, default settings will be loaded.
 
 
-## How it works
+## Processing pipeline
 
 - **Audio capture**: a PyAudio input stream pushes PCM frames into a queue via a callback
 - **Rolling buffer**: incoming chunks are appended into a fixed-size buffer (`CHUNK=2048`)
@@ -102,17 +77,6 @@ Key constants near the top of `main.py`:
 - `FREQ_MIN = 2000`, `FREQ_MAX = 8000` (displayed range)
 - `OVERLAP_FACTOR = 4` (stream buffer uses `CHUNK / OVERLAP_FACTOR` frames)
 - `DRAW_TIME = 20` ms (UI update interval)
-
-
-## Showcase Screenshots
-
-Mutliple screenshots on my system with different settings:
-
-<img width="1919" height="971" alt="Image1" src="https://github.com/user-attachments/assets/94cb7597-0c62-4528-b8a0-97916e8a528b" />
-
-<img width="1919" height="974" alt="Image2" src="https://github.com/user-attachments/assets/906c71e7-1ce8-4118-af90-e8f6fa94135e" />
-
-<img width="1919" height="973" alt="Image3" src="https://github.com/user-attachments/assets/14d43e0f-de1e-4f00-bfd4-f1cab679559a" />
 
 
 ## Author

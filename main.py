@@ -13,6 +13,7 @@ config = {
 }
 
 def makeDpiAware():
+    # windows optimization for high DPI displays
     if platform.system() != "Windows":
         return
     import ctypes
