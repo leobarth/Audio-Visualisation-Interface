@@ -1,4 +1,4 @@
-# Audio Analyzer (PyAudio + PyQtGraph)
+# Audio Analyser (PyAudio + PyQtGraph)
 
 A real-time **spectrum analyser / audio visualiser** written in Python.
 
