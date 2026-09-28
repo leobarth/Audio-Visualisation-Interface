@@ -1,6 +1,6 @@
 # Audio Analyzer (PyAudio + PyQtGraph)
 
-A real-time **spectrum analyzer / audio visualiser** written in Python.
+A real-time **spectrum analyser / audio visualiser** written in Python.
 
 `main.py` captures audio from your system’s **default input device** using **PyAudio**, performs an FFT on a rolling buffer, and renders a **color-coded bar spectrum** in a **PyQtGraph** window. A control panel lets you tune calibration, gating, EQ, smoothing (“ballistics”), peak-hold, and gain in real time.
 
